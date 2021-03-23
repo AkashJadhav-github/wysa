@@ -1,0 +1,87 @@
+<html>
+
+<head>
+    <title>
+        Register/Login page
+    </title>
+</head>
+
+<body>
+    <div style="width: 100%">
+        <div style="float: left; width: 50%">
+            <h1>Register user</h1>
+            Name: <input type="text" name="name" id="name" placeholder="Enter your name here" /><br>
+            Password: <input type="password" name="password" id="password" /><br>
+            Confirm password: <input type="password" name="confirmpassword" id="confirmpassword" /><br>
+            Email: <input type="text" name="email" id="email" /><br>
+            <button type="submit" onclick="submit()">Submit</button>
+        </div>
+        <div style="float: right; width: 50%">
+            <h1>Login user</h1>
+            Email: <input type="text" name="email" id="loginemail" /><br>
+            Password: <input type="password" name="password" id="loginpassword" /><br>
+            <button type="submit" onclick="login()">Login</button>
+        </div>
+        
+    </div>
+
+</body>
+
+<script>
+    function submit() {
+        let name = document.getElementById('name').value;
+        var password = null
+        if (document.getElementById('password').value == document.getElementById('confirmpassword').value) {
+            password = document.getElementById('password').value;
+        }
+        let email = document.getElementById('email').value;
+
+        let data = JSON.stringify({
+            name: name,
+            password: password,
+            email: email
+        })
+
+        const xhr = new XMLHttpRequest();
+
+        xhr.onload = function () {
+            alert(`Loaded: ${xhr.status} ${xhr.response}`);
+            window.reload()
+        };
+
+        xhr.open('POST', 'http://localhost:3000/users/register')
+        xhr.setRequestHeader('content-type', 'application/json')
+
+        xhr.send(data)
+    }
+
+    function login() {
+        let email = document.getElementById('loginemail').value;
+        let password = document.getElementById('loginpassword').value;
+
+        let data = JSON.stringify({
+            password: password,
+            email: email
+        })
+
+        const xhr = new XMLHttpRequest();
+
+        xhr.onload = function () {
+            alert(`Loaded: ${xhr.status} ${xhr.response}`);
+            window.reload()
+        };
+
+        xhr.open('POST', 'http://localhost:3000/users/login')
+        xhr.setRequestHeader('content-type', 'application/json')
+
+        if (email && password) {
+            xhr.send(data)
+        } else {
+            alert("Invalid parameters")
+        }
+    }
+
+
+</script>
+
+</html>
